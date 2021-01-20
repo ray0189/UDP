@@ -1,0 +1,29 @@
+# .travis.yml
+
+dist: xenial
+
+language: python
+
+cache: pip
+
+python:
+    - "3.6"
+    - "3.7"
+    - "3.8"
+    - "nightly"
+
+matrix:
+    allow_failures:
+        - python: "nightly"
+
+install:
+    - pip install codecov
+    - pip install coverage
+
+script:
+    - python3 udpflood.py < .test
+    
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+  - coverage run udpflood.py < .test
+  - codecov
